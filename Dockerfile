@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 LABEL maintainer="Jeff Geerling"
 
-ENV pip_packages "ansible mitogen"
+ENV pip_packages "ansible"
 
 # Install dependencies and upgrade Python.
 RUN apt-get update \
@@ -19,8 +19,7 @@ RUN /usr/bin/python get-pip.py \
 
 # Install Ansible inventory file.
 RUN mkdir -p /etc/ansible
-RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts && \
-    echo "[defaults]\nstrategy_plugins = $(pip show mitogen | grep Location | cut -d' ' -f2)/ansible_mitogen/plugins/strategy\nstrategy = mitogen_linear" > /etc/ansible/ansible.cfg
+RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 # Workaround for pleaserun tool that Logstash uses
 RUN rm -rf /sbin/initctl && ln -s /sbin/initctl.distrib /sbin/initctl
